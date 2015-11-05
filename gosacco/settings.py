@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import datetime
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -121,6 +122,15 @@ REST_FRAMEWORK = {
 }
 
 
+JWT_AUTH = {
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'gosacco.account_utils.jwt_response_payload_handler',
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(minutes=60),
+    'JWT_ALLOW_REFRESH': False,
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+
+
+}
+
 GRAPPELLI_ADMIN_TITLE = "Gosacco"
 STATIC_ROOT = os.path.join(BASE_DIR, 'static').replace('\\', '/')
 
@@ -171,6 +181,11 @@ LOGGING = {
         },
     },
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = BASE_DIR + '/emails/'
+
+
 # All secrets should be added from the local_settings.py that's not added to source control
 try:
     from local_settings import *
